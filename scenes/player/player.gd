@@ -7,6 +7,8 @@ extends CharacterBody3D
 
 var target_velocity = Vector3.ZERO
 
+signal hit
+
 func _physics_process(delta: float) -> void:
 	var direction = Vector3.ZERO
 	
@@ -52,3 +54,10 @@ func bounce() -> void:
 			mob.squash()
 			target_velocity.y = bounce_impulse
 			break
+
+func die() -> void:
+	hit.emit()
+	queue_free()
+
+func _on_mob_detector_body_entered(body: Node3D) -> void:
+	die()
